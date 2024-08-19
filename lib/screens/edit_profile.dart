@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
+import '../widgets/custom_textfeild.dart';
+import '../widgets/gradient_background.dart';
 
 class EditProfilePage extends StatefulWidget {
   final String userName;
@@ -144,21 +146,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientBackgroundScreen(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+        ),
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: isDetailsLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: Colors.white))
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
                 key: _formKey,
                 child: ListView(
                   children: <Widget>[
-                    TextFormField(
+                    SizedBox(height: 20),
+                    CustomTextField(
                       controller: _nameController,
-                      decoration: InputDecoration(labelText: 'Name'),
+                      labelText: 'Name',
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your name';
@@ -166,9 +179,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return null;
                       },
                     ),
-                    TextFormField(
+                    SizedBox(height: 20),
+                    CustomTextField(
                       controller: _userNameController,
-                      decoration: InputDecoration(labelText: 'Username'),
+                      labelText: 'Username',
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your username';
@@ -176,9 +190,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return null;
                       },
                     ),
-                    TextFormField(
+                    SizedBox(height: 20),
+                    CustomTextField(
                       controller: _emailController,
-                      decoration: InputDecoration(labelText: 'Email'),
+                      labelText: 'Email',
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your email';
@@ -186,18 +201,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         return null;
                       },
                     ),
-                    TextFormField(
+                    SizedBox(height: 20),
+                    CustomTextField(
                       controller: _addressController,
-                      decoration: InputDecoration(labelText: 'Address'),
+                      labelText: 'Address',
                     ),
-                    TextFormField(
+                    SizedBox(height: 20),
+                    CustomTextField(
                       controller: _mobileController,
-                      decoration: InputDecoration(labelText: 'Mobile Number'),
+                      labelText: 'Mobile Number',
                     ),
+                    SizedBox(height: 20),
                     SizedBox(height: 50),
                     ElevatedButton(
                       onPressed: _updateUser,
-                      child: Text('Update Profile'),
+                      child: Text(
+                        'Update Profile',
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+                      ),
                     ),
                   ],
                 ),

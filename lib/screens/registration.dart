@@ -5,6 +5,9 @@ import 'package:car_roadsside_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../widgets/custom_textfeild.dart';
+import '../widgets/gradient_background.dart';
+
 class RegistrationPage extends StatefulWidget {
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
@@ -18,6 +21,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _addressController = TextEditingController();
   final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool hidePassword = true;
 
   void _registerUser() async {
     if (_formKey.currentState!.validate()) {
@@ -81,9 +85,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientBackgroundScreen(
       appBar: AppBar(
-        title: Text('Registration'),
+        title: Text(
+          'Registration',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+        ),
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,10 +105,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              // TextFormFields for name, username, email, address, mobile, and password
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                labelText: 'Name',
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your name';
@@ -102,9 +116,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   return null;
                 },
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _userNameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                labelText: 'Username',
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter a username';
@@ -112,9 +127,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   return null;
                 },
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                labelText: 'Email',
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your email';
@@ -122,18 +138,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   return null;
                 },
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _addressController,
-                decoration: InputDecoration(labelText: 'Address'),
+                labelText: 'Address',
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _mobileController,
-                decoration: InputDecoration(labelText: 'Mobile Number'),
+                labelText: 'Mobile Number',
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                labelText: 'Password',
+                obscureText: hidePassword,
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.visibility),
+                  onPressed: () {
+                    setState(() {
+                      hidePassword = !hidePassword;
+                    });
+                  },
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter a password';

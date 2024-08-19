@@ -9,6 +9,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/custom_textfeild.dart';
+import '../widgets/gradient_background.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -19,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late SharedPreferences sp;
+  bool hidePassword = true;
 
   @override
   void initState() {
@@ -79,19 +83,24 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientBackgroundScreen(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(
+          'Login',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
-            children: <Widget>[
-              TextFormField(
+            children: [
+              SizedBox(height: 30),
+              CustomTextField(
                 controller: _userNameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                labelText: 'Username',
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your username';
@@ -99,10 +108,19 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-              TextFormField(
+              SizedBox(height: 20),
+              CustomTextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                labelText: 'Password',
+                obscureText: hidePassword,
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.visibility),
+                  onPressed: () {
+                    setState(() {
+                      hidePassword = !hidePassword;
+                    });
+                  },
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter your password';
@@ -115,11 +133,17 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _login,
-                  child: Text('Login'),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+                  ),
                 ),
               ),
               SizedBox(height: 10),
-              Text('OR'),
+              Text(
+                'OR',
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+              ),
               SizedBox(height: 10),
               Container(
                 width: double.infinity,
@@ -133,7 +157,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     );
                   },
-                  child: Text('Register'),
+                  child: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700, letterSpacing: 1.8),
+                  ),
                 ),
               ),
             ],
