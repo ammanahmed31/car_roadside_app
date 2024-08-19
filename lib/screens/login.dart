@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:car_roadsside_app/screens/edit_profile.dart';
 import 'package:car_roadsside_app/screens/registration.dart';
 import 'package:car_roadsside_app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,6 +18,15 @@ class _LoginPageState extends State<LoginPage> {
   final _userNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late SharedPreferences sp;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) async {
+      sp = await SharedPreferences.getInstance();
+    });
+  }
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
@@ -30,9 +42,20 @@ class _LoginPageState extends State<LoginPage> {
           body: requestBody,
         );
         if (response.statusCode == 200) {
-          print('Response data: ${response.body}');
           var data = json.decode(response.body);
           print('Parsed data: $data');
+          sp.setString('token', data['token']);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.green,
+              showCloseIcon: true,
+              duration: Duration(seconds: 1),
+              content: Text(data['message']),
+            ),
+          );
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return EditProfilePage(userName: username);
+          }));
         } else {
           print('Request failed with status: ${response.statusCode}');
           log('ressponce: ${response.body}');
@@ -51,16 +74,6 @@ class _LoginPageState extends State<LoginPage> {
           content: Text(e.toString()),
         ));
       }
-
-      // final user = await DatabaseHelper.instance.queryUser(username, password);
-
-      // if (user != null) {
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => EditProfilePage(user: user)),
-      //   );
-      // }
     }
   }
 

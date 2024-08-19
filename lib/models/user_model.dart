@@ -40,10 +40,10 @@ class User {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'userName': userName,
+      'username': userName,
       'email': email,
       'address': address,
-      'mobileNumber': mobileNumber,
+      'mobile_no': mobileNumber,
     };
   }
 
@@ -51,10 +51,10 @@ class User {
     return User(
       id: map['id'] != null ? map['id'] as int : 0,
       name: map['name'] as String,
-      userName: map['userName'] as String,
+      userName: map['username'] as String,
       email: map['email'] as String,
       address: map['address'] as String,
-      mobileNumber: map['mobileNumber'] as String,
+      mobileNumber: map['mobile_no'] as String,
     );
   }
 

@@ -5,5 +5,6 @@ class APIConstants {
 
   static const String loginURL = '$apiURL/users/login';
   static const String registerURL = '$apiURL/users/register';
-  static const String updateUserURL = '$apiURL/users/login';
+  static const String updateUserURL = '$apiURL/users/update';
+  static const String getUserDetailsURL = '$apiURL/users/user';
 }

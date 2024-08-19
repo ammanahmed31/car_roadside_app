@@ -38,13 +38,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
       print('url: ${APIConstants.registerURL}');
       try {
         final response = await http.post(
-          Uri.parse(APIConstants.loginURL),
+          Uri.parse(APIConstants.registerURL),
           body: requestBody,
         );
-        if (response.statusCode == 200) {
+        if (response.statusCode == 201) {
           print('Response data: ${response.body}');
           var data = json.decode(response.body);
           print('Parsed data: $data');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.green,
+              showCloseIcon: true,
+              duration: Duration(seconds: 1),
+              content: Text(data['message']),
+            ),
+          );
+          Navigator.pop(context);
         } else {
           print('Request failed with status: ${response.statusCode}');
           log('ressponce: ${response.body}');
